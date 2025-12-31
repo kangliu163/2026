@@ -1,0 +1,177 @@
+<!DOCTYPE html>  
+<html lang="zh-CN">  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  
+<title>2026 **致我的宝宝**</title>  
+  
+<style>  
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Microsoft YaHei",sans-serif}  
+body{background:#0a0a16;height:100vh;overflow:hidden}  
+  
+.slider{width:100vw;height:100vh;display:flex;transition:transform .7s ease}  
+  
+.page{  
+    min-width:100vw;height:100vh;  
+    display:flex;justify-content:center;align-items:center;  
+    flex-direction:column;  
+    opacity:0;transform:translateY(30px);  
+    transition:all .8s ease;  
+}  
+.page.active{opacity:1;transform:translateY(0)}  
+  
+.page1{background:linear-gradient(120deg,#1a1a2e,#16213e)}  
+.page1 h1{color:#fff;font-size:3rem;text-shadow:0 0 15px #4cc9f0}  
+.page1 p{color:#c7c7ff;font-size:1.4rem;margin-top:1rem}  
+.page1 .year{font-size:4rem;color:#ffd166;margin-top:2rem}  
+  
+.page2{background:linear-gradient(120deg,#0f3460,#1a1a2e)}  
+.game-card{  
+    background:rgba(255,255,255,.1);  
+    padding:3rem;border-radius:20px;  
+    text-align:center;  
+    backdrop-filter:blur(10px);  
+}  
+.game-card h2{color:#4cc9f0;font-size:2.2rem}  
+.game-card p{color:#fff;font-size:1.3rem;line-height:1.8;margin-top:1rem}  
+.nickname{color:#ff758f;font-weight:bold}  
+  
+.page3{background:linear-gradient(120deg,#16213e,#0f3460)}  
+.blessing{  
+    background:rgba(255,255,255,.1);  
+    padding:3rem;border-radius:20px;  
+    text-align:center;  
+    width:80%;  
+}  
+.blessing h2{color:#ffd166;font-size:2.3rem;margin-bottom:1.5rem}  
+.blessing p{color:#fff;font-size:1.4rem;line-height:2;min-height:220px}  
+  
+.btn{  
+    margin-top:2rem;padding:1rem 3rem;  
+    border:none;border-radius:50px;  
+    background:linear-gradient(90deg,#ff758f,#ff7eb3);  
+    color:#fff;font-size:1.2rem;  
+    cursor:pointer;  
+}  
+  
+.slide-tip{  
+    position:fixed;bottom:25px;width:100%;  
+    text-align:center;color:#fff;opacity:.7;  
+}  
+  
+.snowflake{  
+    position:absolute;top:-10px;  
+    pointer-events:none;animation:fall linear infinite;  
+}  
+@keyframes fall{to{transform:translateY(110vh);opacity:0}}  
+</style>  
+</head>  
+  
+<body>  
+  
+<div class="slider" id="slider">  
+    <div class="page page1 active">  
+        <h1>2026 **我们的新年**</h1>  
+        <p>**跨越山海** **奔赴彼此**</p>  
+        <div class="year">2026</div>  
+    </div>  
+  
+    <div class="page page2">  
+        <div class="game-card">  
+            <h2>**和平精英的相遇**</h2>  
+            <p>  
+                **在海岛的枪声里**<br>  
+                **我遇见了我的** <span class="nickname">**宝宝**</span><br>  
+                **从相识到相伴**<br>  
+                **阿玉哥哥想陪你走很远**  
+            </p>  
+        </div>  
+    </div>  
+  
+    <div class="page page3">  
+        <div class="blessing">  
+            <h2>**致我的宝贝**</h2>  
+            <p id="typing"></p>  
+            <button class="btn" onclick="copyText()">**复制祝福**</button>  
+        </div>  
+    </div>  
+</div>  
+  
+<div class="slide-tip">← **左右滑动** →</div>  
+  
+<audio id="bgm" loop muted>  
+    <source src="https://music.163.com/song/media/outer/url?id=1864711050.mp3">  
+</audio>  
+  
+<button onclick="toggleBgm()" style="position:fixed;top:20px;right:20px;  
+padding:.5rem 1rem;border-radius:20px;border:none;  
+background:rgba(255,255,255,.2);color:#fff;">  
+**开启音乐**  
+</button>  
+  
+<script>  
+/* **雪花** */  
+setInterval(()=>{  
+    const s=document.createElement("div");  
+    s.className="snowflake";  
+    s.innerText="❄️";  
+    s.style.left=Math.random()*100+"vw";  
+    s.style.fontSize=Math.random()*10+6+"px";  
+    s.style.animationDuration=Math.random()*8+5+"s";  
+    document.body.appendChild(s);  
+    setTimeout(()=>s.remove(),12000);  
+},200);  
+  
+/* **滑动** */  
+let index=0,startX=0;  
+const pages=document.querySelectorAll(".page");  
+const slider=document.getElementById("slider");  
+  
+function update(){  
+    slider.style.transform=`translateX(-${index*100}vw)`;  
+    pages.forEach((p,i)=>p.classList.toggle("active",i===index));  
+    if(index===2) startTyping();  
+}  
+  
+document.addEventListener("touchstart",e=>startX=e.touches**[**0**]**.clientX);  
+document.addEventListener("touchend",e=>{  
+    let d=e.changedTouches**[**0**]**.clientX-startX;  
+    if(d<-50 && index<2) index++;  
+    if(d>50 && index>0) index--;  
+    update();  
+});  
+  
+/* **打字机效果** */  
+const text=`2026**年的雪落满枝头**  
+**愿我的宝宝** **岁岁无忧**  
+**平安喜乐** **万事顺意**  
+**新的一年**  
+**阿玉哥哥继续陪着宝宝**  
+**一起闹** **一起笑**  
+**一起狂打木乃伊**  
+**还有很多很多未来** ❤️`;  
+  
+let i=0;  
+function startTyping(){  
+    const el=document.getElementById("typing");  
+    if(el.innerText) return;  
+    const timer=setInterval(()=>{  
+        el.innerText+=text**[**i++**]**;  
+        if(i>=text.length) clearInterval(timer);  
+    },80);  
+}  
+  
+/* **音乐** */  
+function toggleBgm(){  
+    const bgm=document.getElementById("bgm");  
+    if(bgm.paused){bgm.muted=false;bgm.play();event.target.innerText="**关闭音乐**"}  
+    else{bgm.pause();event.target.innerText="**开启音乐**"}  
+}  
+  
+function copyText(){  
+    navigator.clipboard.writeText(text);  
+    alert("**祝福复制成功** ❤️");  
+}  
+</script>  
+</body>  
+</html>  
